@@ -11,3 +11,37 @@ export enum ButtonImage {
   B13 = '/assets/b13.png',
   NONE = '',
 }
+
+export enum Outcome {
+  IN_PROGRESS = 0,
+  LOST = -1,
+  WON = 1,
+}
+
+export interface IAppState {
+  level: number
+  gridRows: number
+  gridColumns: number
+  buttons: Array<ButtonImage>
+  slots: Array<string>
+  matrix: Array<string[]>
+  moves: Array<string>
+  outcome: Outcome
+}
+
+export interface IGameCtx {
+  state: IAppState
+  dispatch: (action: IAppAction) => void
+}
+
+export interface IAppAction {
+  type: AppActionTypes
+  payload?: any
+}
+
+export enum AppActionTypes {
+  SHUFFLE = 'SHUFFLE',
+  MOVE = 'MOVE',
+  WIN = 'WIN',
+  LOSE = 'LOSE',
+}

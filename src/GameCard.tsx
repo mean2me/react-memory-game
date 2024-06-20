@@ -1,12 +1,25 @@
 import { Avatar } from '@chakra-ui/avatar'
 import { Box, GridItem } from '@chakra-ui/layout'
-import { ButtonImage } from './lib/types'
+import { AppActionTypes, ButtonImage } from './lib/types'
+import { useCallback, useContext } from 'react'
+import { GameCtx } from './StateMgr'
 
 export interface GameGridItemProps {
+  id: string
   card: ButtonImage
   flipped?: boolean
 }
-export const GameCard = ({ card, flipped = false }: GameGridItemProps) => {
+export const GameCard = ({ id, card, flipped = false }: GameGridItemProps) => {
+  const { state, dispatch } = useContext(GameCtx)
+
+  const isFlipped = useCallback(() => {
+    return state.moves.indexOf(id) > -1
+  }, [id, state.moves])
+
+  const move = useCallback(() => {
+    dispatch({ type: AppActionTypes.MOVE, payload: id })
+  }, [dispatch, id])
+
   return (
     <Box
       sx={{
@@ -19,6 +32,7 @@ export const GameCard = ({ card, flipped = false }: GameGridItemProps) => {
         perspective: '100px',
         bgColor: 'transparent',
       }}
+      onClick={() => dispatch({ type: AppActionTypes.MOVE, payload: id })}
     >
       <Box
         sx={{
@@ -31,7 +45,7 @@ export const GameCard = ({ card, flipped = false }: GameGridItemProps) => {
           _hover: {
             boxShadow: '0px 0px 5px #ccc;',
           },
-          ...(flipped
+          ...(flipped || isFlipped()
             ? {
                 transform: 'rotateY(180deg)',
                 boxShadow: '5px 5px 5px #ccc;',
@@ -72,11 +86,7 @@ export const GameCard = ({ card, flipped = false }: GameGridItemProps) => {
             transform: 'rotateY(180deg)',
           }}
         >
-          {card === ButtonImage.NONE ? (
-            'ciao'
-          ) : (
-            <Avatar size="2xl" src={card} />
-          )}
+          {card === ButtonImage.NONE ? '' : <Avatar size="2xl" src={card} />}
         </Box>
       </Box>
     </Box>

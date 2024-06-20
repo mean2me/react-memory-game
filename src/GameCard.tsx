@@ -1,8 +1,9 @@
 import { Avatar } from '@chakra-ui/avatar'
-import { Box, GridItem } from '@chakra-ui/layout'
+import { Box } from '@chakra-ui/layout'
 import { AppActionTypes, ButtonImage } from './lib/types'
 import { useCallback, useContext } from 'react'
 import { GameCtx } from './StateMgr'
+import { Image } from '@chakra-ui/image'
 
 export interface GameGridItemProps {
   id: string
@@ -65,11 +66,16 @@ export const GameCard = ({ id, card, flipped = false }: GameGridItemProps) => {
             position: 'absolute',
             top: 0,
             left: 0,
-            bgColor: 'blue.400',
+            bgColor: 'gray.100',
             backfaceVisibility: 'hidden',
           }}
         >
-          logo
+          <Image
+            objectFit="contain"
+            alt="Logo Catis"
+            src="/assets/logo_catis.png"
+            width="50px"
+          />
         </Box>
         <Box
           className="cardBack"
